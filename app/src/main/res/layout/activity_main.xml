@@ -25,4 +25,11 @@
         android:layout_height="wrap_content"
         android:text="path find"/>
 
+    <Button
+        android:id="@+id/date_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="datepicker"/>
+
+
 </LinearLayout>
