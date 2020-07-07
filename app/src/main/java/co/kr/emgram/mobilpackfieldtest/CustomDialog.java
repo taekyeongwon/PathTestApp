@@ -26,7 +26,7 @@ public class CustomDialog extends AlertDialog {
 
     public void show() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.alert_calendar, null);
-        Builder builder = new Builder(getContext(), R.style.CustomDialogTheme);
+        Builder builder = new Builder(getContext(), R.style.CustomDialogThemes);
         builder.setView(view);
         builder.setCancelable(false);
         final CalendarPickerView calendar = view.findViewById(R.id.calendar_pv);

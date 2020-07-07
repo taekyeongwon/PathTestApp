@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private Button path;
     private Button date_picker;
     private Button screen_shot;
+    private Button drag;
+    private Button email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         path = findViewById(R.id.btn_path);
         date_picker = findViewById(R.id.date_picker);
         screen_shot = findViewById(R.id.screen_shot);
+        drag = findViewById(R.id.drag);
+        email = findViewById(R.id.email);
         //DateRangeCalendarView cal = findViewById(R.id.calendar);
 
         kakao.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +80,42 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent sIntent = new Intent(MainActivity.this, ScreenshotActivity.class);
                 startActivity(sIntent);
+            }
+        });
+
+        drag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, DragActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent emailSelectorIntent = new Intent( Intent.ACTION_SENDTO );
+//                emailSelectorIntent.setData( Uri.parse( "mailto:" ) );
+//
+//                final Intent emailIntent = new Intent( Intent.ACTION_SEND );
+//                emailIntent.putExtra( Intent.EXTRA_EMAIL, new String[]{ "qwesc1234@naver.com" } );
+//                //emailIntent.addFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION );
+//                //emailIntent.addFlags( Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
+//                emailIntent.setSelector( emailSelectorIntent );
+//
+//                if ( emailIntent.resolveActivity( getPackageManager( ) ) != null ){
+//                    startActivity( emailIntent );
+//                }
+                Intent emailSelector = new Intent(Intent.ACTION_SENDTO);
+                emailSelector.setData(Uri.parse("mailto:"));
+                Intent email = new Intent(Intent.ACTION_SEND);
+                email.putExtra(Intent.EXTRA_EMAIL, new String[]{ "qwesc1234@naver.com" });
+                email.putExtra(Intent.EXTRA_SUBJECT, "test");
+                email.putExtra(Intent.EXTRA_TEXT, "testestest");
+                //email.setType("plain/text");
+                email.setSelector(emailSelector);
+                if(email.resolveActivity(getPackageManager()) != null)
+                    startActivity(email);
             }
         });
 

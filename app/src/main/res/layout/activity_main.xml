@@ -37,4 +37,16 @@
         android:layout_height="wrap_content"
         android:text="screen shot"/>
 
+    <Button
+        android:id="@+id/drag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="drag"/>
+
+    <Button
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="email"/>
+
 </LinearLayout>
