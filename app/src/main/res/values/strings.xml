@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">MapLangTest</string>
     <string name="naver_client_id">d263ch3675</string>
+    <string name="facebook_app_id">925253104614802</string>
+    <string name="fb_login_protocol_scheme">fb925253104614802</string>
 </resources>

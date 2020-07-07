@@ -31,5 +31,10 @@
         android:layout_height="wrap_content"
         android:text="datepicker"/>
 
+    <Button
+        android:id="@+id/screen_shot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="screen shot"/>
 
 </LinearLayout>

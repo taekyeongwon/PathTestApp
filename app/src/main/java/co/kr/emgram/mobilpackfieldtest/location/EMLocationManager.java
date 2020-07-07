@@ -734,15 +734,6 @@ public class EMLocationManager implements LocationListener, GoogleApiClient.Conn
 
         double height = Math.sqrt(Math.abs(aSquare - tmpSquare));
 
-        Log.d("Height", "변 a        : "+a);
-        Log.d("Height", "변 b        : "+b);
-        Log.d("Height", "변 c        : "+c);
-        Log.d("Height", "변 a제곱    : "+aSquare);
-        Log.d("Height", "변 b제곱    : "+bSquare);
-        Log.d("Height", "변 c제곱    : "+cSquare);
-        Log.d("Height", "분수식 제곱 : "+tmpSquare);
-        Log.d("Height", "높이        : "+height);
-
         return height <= diffDistance;  //true인 경우 start-next 좌표간 직선 안에 현재 위치의 반경이 포함되어 있음.
     }
 

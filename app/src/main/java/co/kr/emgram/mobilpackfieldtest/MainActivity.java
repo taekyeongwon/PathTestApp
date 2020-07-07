@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private Button naver;
     private Button path;
     private Button date_picker;
+    private Button screen_shot;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         naver = findViewById(R.id.btn_naver);
         path = findViewById(R.id.btn_path);
         date_picker = findViewById(R.id.date_picker);
+        screen_shot = findViewById(R.id.screen_shot);
         //DateRangeCalendarView cal = findViewById(R.id.calendar);
 
         kakao.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +67,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 CustomDialog dialog = new CustomDialog(MainActivity.this);
                 dialog.show();
+            }
+        });
+
+        screen_shot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sIntent = new Intent(MainActivity.this, ScreenshotActivity.class);
+                startActivity(sIntent);
             }
         });
 
