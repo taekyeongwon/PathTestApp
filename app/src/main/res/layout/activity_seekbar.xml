@@ -4,12 +4,58 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:rotation="90"
-        app:layout_constraintTop_toTopOf="parent"
+
+    <co.kr.emgram.mobilpackfieldtest.SimpleC
+        android:id="@+id/custom_rsb"
+        android:layout_width="150dp"
+        android:layout_height="400dp"
+        app:rsb_gravity="center"
+        app:rsb_step_auto_bonding="true"
+        app:rsb_progress_height="5dp"
+        app:rsb_step_width="20dp"
+        app:rsb_step_height="20dp"
+        app:rsb_min_interval="10"
+        app:rsb_step_drawable="@drawable/calendar_selector"
+        app:rsb_thumb_drawable="@drawable/ic_launcher_background"
+        app:rsb_progress_color="@color/colorPrimary"
+        app:rsb_tick_mark_text_array="@array/거리"
+        app:rsb_tick_mark_text_margin="15dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <io.apptik.widget.MultiSlider
+        android:id="@+id/slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/custom_rsb"
+        app:drawThumbsApart="true"/>
+
+    <co.kr.emgram.mobilpackfieldtest.SimpleC
+        android:id="@+id/simple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:count="10"
+        app:movable="true"
+        app:activeFocusThumbColor="@color/colorAccent"
+        app:activeTickColor="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/slider"/>
+
+    <Button
+        android:id="@+id/range_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/simple" />
+
+<!--    <com.google.android.material.slider.RangeSlider-->
+<!--        android:id="@+id/mslider"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:valueFrom="0.0"-->
+<!--        android:valueTo="100.0"-->
+<!--        app:values="@array/initial_slider_values"-->
+<!--        android:stepSize="10.0"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/simple"/>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

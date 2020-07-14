@@ -49,4 +49,16 @@
         android:layout_height="wrap_content"
         android:text="email"/>
 
+    <Button
+        android:id="@+id/seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="seekbar"/>
+
+    <Button
+        android:id="@+id/scheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="scheme"/>
+
 </LinearLayout>

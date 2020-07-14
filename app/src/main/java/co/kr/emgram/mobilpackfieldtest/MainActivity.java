@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private Button screen_shot;
     private Button drag;
     private Button email;
+    private Button scheme;
+    private Button seek_bar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         screen_shot = findViewById(R.id.screen_shot);
         drag = findViewById(R.id.drag);
         email = findViewById(R.id.email);
+        scheme = findViewById(R.id.scheme);
+        seek_bar = findViewById(R.id.seek_bar);
         //DateRangeCalendarView cal = findViewById(R.id.calendar);
 
         kakao.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +120,30 @@ public class MainActivity extends AppCompatActivity {
                 email.setSelector(emailSelector);
                 if(email.resolveActivity(getPackageManager()) != null)
                     startActivity(email);
+            }
+        });
+
+        seek_bar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SeekBarActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        scheme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(
+                        Intent.ACTION_VIEW, Uri.parse(
+                                "nmap://route/walk?" +
+                                        "slat=37.4640070&slng=126.9522394&sname=%EC%84%9C%EC%9A%B8%EB%8C%80%ED%95%99%EA%B5%90" +
+                                        "&v1lat=37.4690000&v1lng=126.9580000&v1name=테스트위치" +
+                                        "&dlat=37.4764356&dlng=126.9618302&dname=%EB%8F%99%EC%9B%90%EB%82%99%EC%84%B1%EB%8C%80%EC%95%84%ED%8C%8C%ED%8A%B8" +
+                                        "&appname=co.kr.emgram.mobilpackfieldtest"));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                startActivity(intent);
             }
         });
 

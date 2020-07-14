@@ -7,4 +7,9 @@
         <item>40</item>
         <item>50</item>
     </string-array>
+
+    <array name="initial_slider_values">
+        <item>0.0</item>
+        <item>100.0</item>
+    </array>
 </resources>
