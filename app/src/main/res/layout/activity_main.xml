@@ -61,4 +61,22 @@
         android:layout_height="wrap_content"
         android:text="scheme"/>
 
+    <Button
+        android:id="@+id/roc_api_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="rocketchat api test"/>
+
+    <EditText
+        android:id="@+id/name_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/email_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/username_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

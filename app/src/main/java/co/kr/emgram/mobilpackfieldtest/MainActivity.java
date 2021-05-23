@@ -11,12 +11,18 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.AttrRes;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import co.kr.emgram.mobilpackfieldtest.network.data.UserData;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private Button email;
     private Button scheme;
     private Button seek_bar;
+    private Button roc_api_test;
+    private EditText name_et, email_et, username_et;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         scheme = findViewById(R.id.scheme);
         seek_bar = findViewById(R.id.seek_bar);
+        roc_api_test = findViewById(R.id.roc_api_test);
+        name_et = findViewById(R.id.name_et);
+        email_et = findViewById(R.id.email_et);
+        username_et = findViewById(R.id.username_et);
         //DateRangeCalendarView cal = findViewById(R.id.calendar);
 
         kakao.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +156,27 @@ public class MainActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 startActivity(intent);
+            }
+        });
+
+        roc_api_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TestModel model = new TestModel();
+                model.userCreate(name_et.getText().toString(),
+                        email_et.getText().toString(),
+                        username_et.getText().toString(),
+                        new TestModel.OnMainModelListener<UserData>() {
+                    @Override
+                    public void onSuccess(@Nullable UserData data) {
+                        Log.d("UserCreate::", data.get_id()+"\n"+data.getCreateAt()+"\n"+data.getUsername());
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull String message) {
+
+                    }
+                });
             }
         });
 

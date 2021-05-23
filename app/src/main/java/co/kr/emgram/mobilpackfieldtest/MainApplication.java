@@ -2,7 +2,9 @@ package co.kr.emgram.mobilpackfieldtest;
 
 import android.app.Application;
 
-public class MainApplication extends Application {
+import androidx.multidex.MultiDexApplication;
+
+public class MainApplication extends MultiDexApplication {
     public static MainApplication application;
 
     @Override
