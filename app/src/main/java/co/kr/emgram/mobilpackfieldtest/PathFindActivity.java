@@ -352,10 +352,10 @@ public class PathFindActivity extends AppCompatActivity implements OnMapReadyCal
             if (EMLocationManager.getInstance().checkLocationInPath(coord, coordList.get(0), coordList.get(1))) {
                 Log.d("Path", "현재위치가 경로안에 있음");
                 //coordList.set(0, coord);
-                if (EMLocationManager.getInstance().checkLocationInPath(coord, coordList.get(1))) {
+                if (EMLocationManager.getInstance().checkRemovePath(coord, coordList)) {
                     Log.d("Path", "현재위치가 1번째 위치 반경안에 있음");
                     //coordList.set(1, coord);
-                    coordList.remove(0);
+//                    coordList.remove(0);
                 }
                 runOnUiThread(new Runnable() {
                     @Override

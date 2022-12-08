@@ -23,6 +23,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.naver.maps.geometry.LatLng;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -696,16 +697,47 @@ public class EMLocationManager implements LocationListener, GoogleApiClient.Conn
      * @param nextLocation
      * @return
      */
-    public boolean checkLocationInPath(LatLng current, LatLng nextLocation) {
+//    public boolean checkLocationInPath(LatLng current, ArrayList<LatLng> nextLocation) {
+//        int index = 0;
+//        ArrayList<Integer> removeIndex = new ArrayList<Integer>();
+//        for(index = 0; index<nextLocation.size(); index++) {
+//            if (current != null) {
+//                double distance = current.distanceTo(nextLocation.get(index));
+//                removeIndex.add(index);
+//
+//                if (distance < diffDistance) {
+//                    for (int i = 0; i < removeIndex.size(); i++) {
+//                        nextLocation.remove(0);
+//                    }
+//                    return true;
+//                }
+//            }
+//        }
+//
+//        return false;
+//
+//    }
+    public boolean checkRemovePath(LatLng current, ArrayList<LatLng> nextLocation) {
+        int index = 0;
+        int removeCount = 0;
         if (current != null) {
-            double distance = current.distanceTo(nextLocation);
-
-            if (distance < diffDistance) {
-                return true;
+            boolean isIncludeStart = current.distanceTo(nextLocation.get(index)) <= diffDistance;
+            boolean isIncludeNext;
+            if(!isIncludeStart) {   //시작점 포함하지 않고 넘어갔고
+                for(int i = 1; i < nextLocation.size(); i++) {
+                    isIncludeNext = current.distanceTo(nextLocation.get(i)) <= diffDistance;
+                    if(isIncludeNext) { //도착점 포함하면 경로 안지움.
+                        return true;
+                    } else {
+                        removeCount++;
+                    }
+                }
+            }
+            for(int i = 0; i < removeCount; i++) {
+                nextLocation.remove(0);
             }
         }
         return false;
-
     }
 
     public boolean checkLocationInPath(LatLng current, LatLng startPos, LatLng nextPos) {
