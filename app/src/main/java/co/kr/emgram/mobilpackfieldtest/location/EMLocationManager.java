@@ -717,27 +717,27 @@ public class EMLocationManager implements LocationListener, GoogleApiClient.Conn
 //        return false;
 //
 //    }
-    public boolean checkRemovePath(LatLng current, ArrayList<LatLng> nextLocation) {
+    public void checkRemovePath(LatLng current, ArrayList<LatLng> nextLocation) {
         int index = 0;
-        int removeCount = 0;
+//        int removeCount = 1;
         if (current != null) {
             boolean isIncludeStart = current.distanceTo(nextLocation.get(index)) <= diffDistance;
             boolean isIncludeNext;
             if(!isIncludeStart) {   //시작점 포함하지 않고 넘어갔고
                 for(int i = 1; i < nextLocation.size(); i++) {
                     isIncludeNext = current.distanceTo(nextLocation.get(i)) <= diffDistance;
-                    if(isIncludeNext) { //도착점 포함하면 경로 안지움.
-                        return true;
+                    if(isIncludeNext && nextLocation.size() > 2) { //도착점 포함하면 경로 지우기. 마지막 라인은 지우지 않도록.
+//                        for(int j = 0; j < removeCount; j++) {
+                            nextLocation.remove(0);
+//                        }
+                        break;
                     } else {
-                        removeCount++;
+//                        removeCount++;
                     }
                 }
             }
-            for(int i = 0; i < removeCount; i++) {
-                nextLocation.remove(0);
-            }
+
         }
-        return false;
     }
 
     public boolean checkLocationInPath(LatLng current, LatLng startPos, LatLng nextPos) {
@@ -765,7 +765,11 @@ public class EMLocationManager implements LocationListener, GoogleApiClient.Conn
         double tmpSquare = Math.pow((aSquare - bSquare + cSquare) / (2*c), 2);
 
         double height = Math.sqrt(Math.abs(aSquare - tmpSquare));
-
+        if(currentToNext > startToNext + diffDistance) {
+            Log.d("path", "최대 범위 벗어남");
+            return false;   //다음 경로까지 + 반경 = 최대 범위, 현재위치부터 다음 거리까지가 최대범위 벗어나면 벗어난 것으로 판단.(그대로 뒤로 돌아가는 경우에 대한 예외처리)
+        }
+        Log.d("path", "안벗어났고 height <= diff : " + (height <= diffDistance));
         return height <= diffDistance;  //true인 경우 start-next 좌표간 직선 안에 현재 위치의 반경이 포함되어 있음.
     }
 
