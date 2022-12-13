@@ -422,7 +422,7 @@ public class EMLocationManager implements LocationListener, GoogleApiClient.Conn
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude())
                         + " 경도:" + String.valueOf(location.getLongitude());
 
-                Log.d(TAG, "onLocationResult : " + markerSnippet);
+//                Log.d(TAG, "onLocationResult : " + markerSnippet);
 
                 if (!checkAccuracy(location)) {
                     return;
@@ -717,34 +717,42 @@ public class EMLocationManager implements LocationListener, GoogleApiClient.Conn
 //        return false;
 //
 //    }
-    public void checkRemovePath(LatLng current, ArrayList<LatLng> nextLocation) {
-        int index = 0;
-//        int removeCount = 1;
-        if (current != null) {
-            boolean isIncludeStart = current.distanceTo(nextLocation.get(index)) <= diffDistance;
-            boolean isIncludeNext;
-            if(!isIncludeStart) {   //시작점 포함하지 않고 넘어갔고
-                for(int i = 1; i < nextLocation.size(); i++) {
-                    isIncludeNext = current.distanceTo(nextLocation.get(i)) <= diffDistance;
-                    if(isIncludeNext && nextLocation.size() > 2) { //도착점 포함하면 경로 지우기. 마지막 라인은 지우지 않도록.
-//                        for(int j = 0; j < removeCount; j++) {
-                            nextLocation.remove(0);
-//                        }
-                        break;
-                    } else {
-//                        removeCount++;
-                    }
-                }
-            }
 
-        }
-    }
+    public LatLng subPosition = null;   //화면 표시용
 
-    public boolean checkLocationInPath(LatLng current, LatLng startPos, LatLng nextPos) {
+    public boolean checkLocationInPath(LatLng current, ArrayList<LatLng> nextLocation) {
+        LatLng startPos = nextLocation.get(0);
+        LatLng nextPos = nextLocation.get(1);
+
         double currentToStart = current.distanceTo(startPos);   //삼각형 변 a또는 b
         double currentToNext = current.distanceTo(nextPos);     //삼각형 변 a또는 b
         double startToNext = startPos.distanceTo(nextPos);      //삼각형 변 c(삼각형의 높이와 수직이 되는 밑변)
 
+        for(int i = 2; i < nextLocation.size(); i++) {
+            LatLng subPos = nextLocation.get(i);
+            if(startToNext < diffDistance) {    //출발 ~ 다음 좌표가 너무 가까운 경우(ex: 교차로) 재요청 발생 방지하도록 보정 처리
+                Log.d("Path", "startToNext < diffDistance");
+                currentToNext = current.distanceTo(subPos);
+                startToNext = startPos.distanceTo(subPos);
+                subPosition = subPos;   //화면 표시용
+            }
+        }
+
+        if(currentToNext > startToNext + diffDistance) {
+            Log.d("path", "최대 범위 벗어남");
+            return false;   //다음 경로까지 + 반경 = 최대 범위, 현재위치부터 다음 거리까지가 최대범위 벗어나면 벗어난 것으로 판단.(그대로 뒤로 돌아가는 경우에 대한 예외처리)
+        }
+
+        if(startToNext == 0) {
+            Log.d("Path", "startToNext == 0");
+            return true;
+        }
+
+        double height = getHeight(currentToStart, currentToNext, startToNext);
+        return height <= diffDistance;  //true인 경우 start-next 좌표간 직선 안에 현재 위치의 반경이 포함되어 있음.
+    }
+
+    private double getHeight(double currentToStart, double currentToNext, double startToNext) {
         double a, b;
         if(currentToStart < currentToNext) {
             a = currentToStart;
@@ -755,22 +763,35 @@ public class EMLocationManager implements LocationListener, GoogleApiClient.Conn
         }
         double c = startToNext;
 
-        if(startToNext == 0) {
-            Log.d("Path", "startToNext == 0");
-            return true;
-        }
         double aSquare = Math.pow(a, 2);
         double bSquare = Math.pow(b, 2);
         double cSquare = Math.pow(c, 2);
         double tmpSquare = Math.pow((aSquare - bSquare + cSquare) / (2*c), 2);
 
-        double height = Math.sqrt(Math.abs(aSquare - tmpSquare));
-        if(currentToNext > startToNext + diffDistance) {
-            Log.d("path", "최대 범위 벗어남");
-            return false;   //다음 경로까지 + 반경 = 최대 범위, 현재위치부터 다음 거리까지가 최대범위 벗어나면 벗어난 것으로 판단.(그대로 뒤로 돌아가는 경우에 대한 예외처리)
+        return Math.sqrt(Math.abs(aSquare - tmpSquare));
+    }
+
+    public void checkRemovePath(LatLng current, ArrayList<LatLng> nextLocation) {
+//        int index = 0;
+        int removeCount = 1;
+        if (current != null) {
+//            boolean isIncludeStart = current.distanceTo(nextLocation.get(index)) <= diffDistance;
+            boolean isIncludeNext;
+//            if(!isIncludeStart) {   //시작점 포함하지 않고 넘어갔고 -> 시작점이랑 도착점 가까운 경우 생각하면 도착점만 포함하는지 확인하면 됨
+                for(int i = 1; i < nextLocation.size(); i++) {
+                    isIncludeNext = current.distanceTo(nextLocation.get(i)) <= diffDistance;
+                    if(isIncludeNext && nextLocation.size() > 2) { //도착점 포함하면 경로 지우기. 마지막 라인은 지우지 않도록.
+                        for(int j = 0; j < removeCount; j++) {
+                            nextLocation.remove(0);
+                        }
+                        break;
+                    } else {
+                        removeCount++;
+                    }
+                }
+//            }
+
         }
-        Log.d("path", "안벗어났고 height <= diff : " + (height <= diffDistance));
-        return height <= diffDistance;  //true인 경우 start-next 좌표간 직선 안에 현재 위치의 반경이 포함되어 있음.
     }
 
     public static class SettingValue {

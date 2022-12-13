@@ -3,6 +3,7 @@ package co.kr.emgram.mobilpackfieldtest;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,6 +34,13 @@ import com.skt.Tmap.TMapPOIItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapPolyLine;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,9 +75,11 @@ public class PathFindActivity extends AppCompatActivity implements OnMapReadyCal
     private CircleOverlay circle = new CircleOverlay();
     private CircleOverlay first = new CircleOverlay();
     private CircleOverlay second = new CircleOverlay();
+    private CircleOverlay third = new CircleOverlay();
 
     private PolylineOverlay firstPolyLine = new PolylineOverlay();
     private PolylineOverlay secondPolyLine = new PolylineOverlay();
+    private PolylineOverlay thirdPolyLine = new PolylineOverlay();
 
     private int[] diffDistance = {10, 20, 30, 40 ,50};
 
@@ -266,6 +276,7 @@ public class PathFindActivity extends AppCompatActivity implements OnMapReadyCal
                     LatLng latLng = new LatLng(lat, lng);
                     coordList.add(latLng);
                 }
+                makeTestData(new Gson().toJson(coordList), "/path");
 
 //                ArrayList<TMapPOIItem> around = data.findAroundNamePOI(startPoint, "편의점;은행", 2, 100);
 //                for(int i = 0; i < around.size(); i++) {
@@ -309,6 +320,8 @@ public class PathFindActivity extends AppCompatActivity implements OnMapReadyCal
             naverMap.moveCamera(CameraUpdate.scrollTo(coord));
         isFirst = false;
 
+        makeTestData(new Gson().toJson(coord), "/coord");
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -347,10 +360,19 @@ public class PathFindActivity extends AppCompatActivity implements OnMapReadyCal
                 ));
                 secondPolyLine.setColor(Color.argb(125, 255, 0, 0));
                 secondPolyLine.setMap(naverMap);
-
             }
 
-            if (EMLocationManager.getInstance().checkLocationInPath(coord, coordList.get(0), coordList.get(1))) {
+
+            if (coordList.size() <= 2) {
+                return;
+            }
+
+            if (EMLocationManager.getInstance().checkLocationInPath(
+                    coord,
+                    coordList
+            )) {
+                drawThird(coord);   //화면 표시용
+
                 Log.d("Path", "현재위치가 경로안에 있음");
                 //coordList.set(0, coord);
                 EMLocationManager.getInstance().checkRemovePath(coord, coordList);
@@ -359,11 +381,9 @@ public class PathFindActivity extends AppCompatActivity implements OnMapReadyCal
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (coordList.size() > 2) {
-                            path.setMap(null);
-                            path.setCoords(coordList);
-                            path.setMap(naverMap);
-                        }
+                        path.setMap(null);
+                        path.setCoords(coordList);
+                        path.setMap(naverMap);
 
                         current.setMap(null);
                         current.setPosition(coordList.get(0));
@@ -428,6 +448,40 @@ public class PathFindActivity extends AppCompatActivity implements OnMapReadyCal
 //                pathFindThread.start();
 //            }
 //        }
+    }
+
+    private void makeTestData(String json, String fileName) {
+        String downloadPath = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        BufferedWriter bw = null;
+        try {
+            bw = new BufferedWriter(new FileWriter(downloadPath + fileName, true));
+            bw.write(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(bw != null) bw.close();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void drawThird(LatLng coord) {
+        if(EMLocationManager.getInstance().subPosition != null) {
+            third.setMap(null);
+            third.setCenter(EMLocationManager.getInstance().subPosition);
+            third.setRadius(10);
+            third.setColor(Color.argb(125, 0, 255, 0));
+            third.setMap(naverMap);
+
+            thirdPolyLine.setMap(null);
+            thirdPolyLine.setCoords(Arrays.asList(
+                    coord, EMLocationManager.getInstance().subPosition
+            ));
+            thirdPolyLine.setColor(Color.argb(125, 0, 255, 0));
+            thirdPolyLine.setMap(naverMap);
+        }
     }
 
     @Override
