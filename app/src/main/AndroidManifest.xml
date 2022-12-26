@@ -32,6 +32,7 @@
         <activity android:name=".ScreenshotActivity"/>
         <activity android:name=".DragActivity"/>
         <activity android:name=".SeekBarActivity"/>
+        <activity android:name=".GCTest"/>
 
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="5f1496176bab6ca6afa7a8d308c6472e"/>
         <meta-data android:name="com.naver.maps.map.CLIENT_ID" android:value="d263ch3675"/>

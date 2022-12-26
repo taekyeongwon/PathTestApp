@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private Button scheme;
     private Button seek_bar;
     private Button roc_api_test;
+    private Button gc_test;
     private EditText name_et, email_et, username_et;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         name_et = findViewById(R.id.name_et);
         email_et = findViewById(R.id.email_et);
         username_et = findViewById(R.id.username_et);
+        gc_test = findViewById(R.id.gc_test);
         //DateRangeCalendarView cal = findViewById(R.id.calendar);
 
         kakao.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +180,14 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+            }
+        });
+
+        gc_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, GCTest.class);
+                startActivity(intent);
             }
         });
 
