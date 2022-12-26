@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import co.kr.emgram.mobilpackfieldtest.network.data.UserData;
 
@@ -181,8 +182,37 @@ public class MainActivity extends AppCompatActivity {
         });
 
         getAppKeyHash();
-
+        setTest();
     }
+
+    private void setTest() {
+        test.t = new TMapManager.OnTest() {
+            @Override
+            public void testing() {
+                Log.d("test", "onTest");
+            }
+        };
+        TMapManager.getInstance().setTest(test);
+        TMapManager.getInstance().tasking();
+
+        TMapManager.getInstance().setTestInterface(testInterface);
+        TMapManager.getInstance().tasking2();
+    }
+
+    private void testRemove() {
+        test.t = null;
+    }
+    private void testRemove2() {
+        testInterface = null;
+    }
+
+    private TMapManager.Nested test = new TMapManager.Nested();
+    private TMapManager.OnTest testInterface = new TMapManager.OnTest() {
+        @Override
+        public void testing() {
+            Log.d("test", "onTestInterface");
+        }
+    };
 
     private int resolver(@AttrRes int attributeResId) {
         TypedValue value = new TypedValue();

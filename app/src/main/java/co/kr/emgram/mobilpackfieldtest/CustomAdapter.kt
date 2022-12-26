@@ -13,6 +13,10 @@ class CustomAdapter: RecyclerView.Adapter<CustomAdapter.CustomViewHolder>(), OnI
         this.list.addAll(list)
         notifyDataSetChanged()
     }
+    fun insertList(list: ArrayList<Int>) {
+        this.list.addAll(list)
+        notifyItemRangeInserted(this.list.size - list.size, list.size)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         return CustomViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_item, parent, false))
