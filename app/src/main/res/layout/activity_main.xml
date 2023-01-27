@@ -8,6 +8,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/parent_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -88,6 +89,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="gc test"/>
+
+        <Button
+            android:id="@+id/list_adapter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="list adpater"/>
+        <Button
+            android:id="@+id/btn_webview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="webview"/>
+        <LinearLayout
+            android:id="@+id/view_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <co.kr.emgram.mobilpackfieldtest.webview.CustomView
+                android:id="@+id/custom_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

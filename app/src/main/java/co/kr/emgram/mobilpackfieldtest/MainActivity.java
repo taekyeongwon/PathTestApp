@@ -12,6 +12,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.annotation.AttrRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,9 +22,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 
+import co.kr.emgram.mobilpackfieldtest.listadapter.AdjustActivity;
 import co.kr.emgram.mobilpackfieldtest.network.data.UserData;
+import co.kr.emgram.mobilpackfieldtest.webview.CustomView;
+import co.kr.emgram.mobilpackfieldtest.webview.WebViewActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +41,11 @@ public class MainActivity extends AppCompatActivity {
     private Button seek_bar;
     private Button roc_api_test;
     private Button gc_test;
+    private Button list_adapter;
+    private Button btn_webview;
     private EditText name_et, email_et, username_et;
+    private LinearLayout parent_layout, view_group;
+    private CustomView custom_view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +65,26 @@ public class MainActivity extends AppCompatActivity {
         email_et = findViewById(R.id.email_et);
         username_et = findViewById(R.id.username_et);
         gc_test = findViewById(R.id.gc_test);
+        list_adapter = findViewById(R.id.list_adapter);
+        btn_webview = findViewById(R.id.btn_webview);
         //DateRangeCalendarView cal = findViewById(R.id.calendar);
+        parent_layout = findViewById(R.id.parent_layout);
+        view_group = findViewById(R.id.view_group);
+        custom_view = findViewById(R.id.custom_view);
+
+//        LayoutInflater infl = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+//        ViewGroup group = (ViewGroup) infl.inflate(R.layout.custom_layout, view_group); //1. inflate 뷰그룹에 해주면 attachToRoot true랑 동일하게 동작
+//        ViewGroup group = (ViewGroup) infl.inflate(R.layout.custom_layout, view_group, false);  //2. attachToRoot false면 addView해서 붙임.
+//        ViewGroup group = (ViewGroup) infl.inflate(R.layout.custom_layout, null);   //3. root null이면 attachToRoot false랑 동일하게 동작. addView해서 붙여야 함.
+//        ViewGroup group = (ViewGroup) infl.inflate(R.layout.custom_layout, null, true);   //4. root null이면 attachToRoot true 줘도 안붙음. 뷰그룹이 null이니까 어디다 addView 해줘야 함
+//        view_group.addView(group);
+//        view_group.addView(new CustomView(this));
+//        try {
+//            view_group.addView(custom_view);
+//        } catch (Exception e) {
+//            e.printStackTrace();  //removeView() 호출 필요
+//        }
+//        parent_layout.addView(new CustomView(this));
 
         kakao.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,8 +217,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        list_adapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AdjustActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_webview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+                startActivity(intent);
+            }
+        });
+
         getAppKeyHash();
-        setTest();
+//        setTest();
     }
 
     private void setTest() {
